@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>STI-Bench: Are MLLMs Ready for Precise Spatial-Temporal World Understanding?</title>
+    <!-- 引入 Font Awesome 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- 引入 Academicons 图标库 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+        .robot {
+            background-color: #ffffff;
+            padding: 40px 0; /* 增加上下间距 */
+            text-align: center;
+        }
+        .robot .title {
+            font-size: 3.5em; /* 进一步增大字号 */
+            font-weight: bold; /* 加粗 */
+            margin-bottom: 10px;
+        }
+        .robot .subtitle {
+            font-size: 1.2em;
+            color: #666;
+        }
+        .publication-authors {
+            font-size: 1.25em; /* 设置字体大小 */
+            text-align: center; /* 居中对齐 */
+            margin-bottom: 20px;
+        }
+        .author-name {
+            color: rgb(78, 233, 78); /* 作者名字为绿色 */
+        }
+        .author-affiliation {
+            color: black; /* 机构名称为黑色 */
+        }
+        .publication-links {
+            margin-top: 20px;
+        }
+        .publication-links .link-block {
+            display: inline-block;
+            margin: 0 5px; /* 减小左右间距 */
+        }
+        .publication-links a {
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: bold;
+            background-color: #333333;
+            padding: 10px 20px; /* 增加内边距 */
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s; /* 添加过渡效果 */
+        }
+        .publication-links a:hover {
+            background-color: #555555;
+        }
+        .publication-links i {
+            margin-right: 5px;
+        }
+        .icon {
+            display: inline-block;
+            margin-right: 5px;
+        }
+    
+        /* Abstract Section Styles */
+        .abstract-section {
+            background-color: #ffffff;
+            padding: 40px 0;
+        }
+
+        .abstract-section h2 {
+            font-size: 2.0em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif; /* 设置字体为 Times New Roman */
+        }
+
+        .abstract-section p {
+            font-size: 1.5em;
+            color: #333;
+            text-align: justify; /* 对齐文本 */
+            margin: 0 auto;
+            max-width: 800px; /* 控制段落宽度 */
+            font-family: 'Times New Roman', Times, serif; /* 设置字体为 Times New Roman */
+        }
+
+        /* Conclusion Section Styles */
+        .conclusion-section {
+            margin-top: 20px;
+            background-color: #ffffff;
+            padding: 40px 0;
+            margin: 0;
+            width: 100%; /* 设置宽度为整页宽度 */
+        }
+
+        .conclusion-section .container {
+            max-width: 100%; /* 确保容器宽度为整页宽度 */
+            padding: 0 20px; /* 添加一些内边距以适应小屏幕 */
+        }
+
+        .conclusion-section h2 {
+            font-size: 2.0em;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif; /* 设置字体为 Times New Roman */
+        }
+
+        .conclusion-section p {
+            font-size: 1.5em;
+            color: #333;
+            text-align: justify; /* 对齐文本 */
+            margin: 0 auto;
+            max-width: 800px; /* 控制段落宽度 */
+            font-family: 'Times New Roman', Times, serif; /* 设置字体为 Times New Roman */
+        }
+        .demo-video-section {
+            background-color: #ffffff; /* 设置背景颜色为白色 */
+            padding: 40px 100px; /* 增加上下和左右间距 */
+        }
+        .demo-video-section h2 {
+            font-size: 2.0em; /* 增大字体大小 */
+            margin-bottom: 10px;
+            font-family: 'Times New Roman', Times, serif; /* 设置字体为 Times New Roman */
+        }
+        .demo-video-section p {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            font-family: 'Times New Roman', Times, serif; /* 设置字体为 Times New Roman */
+        }
+        .video-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* 视频之间的间距 */
+            margin-bottom: 20px; /* 每行之间的间距 */
+        }
+        .video-container video {
+            border-radius: 8px; /* 视频边角圆滑 */
+            width: 400px; /* 视频宽度 */
+            height: auto; /* 视频高度，保持16:9比例 */
+        }
+        .title .highlight {
+            color: orange; /* 改为橙色 */
+        }
+        /* General Section Styles */
+        .logo-section,
+        .comparison-section,
+        .pipeline-section,
+        .results-section {
+            background-color: #ffffff;
+            padding: 40px 0; /* Adjust padding to control vertical spacing */
+            margin: 0; /* Remove margin to ensure no space between sections */
+        }
+
+        .container {
+            max-width: 1200px; /* Adjust max-width as needed */
+            margin: 0 auto; /* Center the container */
+            padding: 0 20px; /* Add some padding for smaller screens */
+        }
+
+        /* Section Titles and Descriptions */
+        h2 {
+            font-size: 2.0em;
+            margin-bottom: 20px; /* Add some space below the title */
+            text-align: center; /* Center-align titles */
+            font-family: 'Times New Roman', Times, serif; /* 设置字体为 Times New Roman */
+        }
+
+        p {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: left; /* Align text to the left */
+            font-family: 'Times New Roman', Times, serif; /* 设置字体为 Times New Roman */
+        }
+
+        /* Image Containers */
+        .image-container {
+            width: 100%; /* Ensure image container takes full width */
+            text-align: center; /* Center-align images */
+        }
+
+        /* Full-width images */
+        .full-width-image {
+            width: 100%; /* Make images full-width */
+            max-width: 100%; /* Ensure images do not overflow */
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .quiz-section {
+            background-color: #ffffff; /* 设置背景颜色为白色 */
+            padding: 40px 100px; /* 增加上下和左右间距 */
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px; /* 调整左右间距 */
+        }
+        .quiz-section-title {
+            margin-bottom: 20px; /* 添加一些间距 */
+            text-align: center; /* 标题居中对齐 */
+        }
+        .quiz-content {
+            display: flex;
+            gap: 20px;
+        }
+        .quiz-section .video-column {
+            flex: 3;
+            max-width: 60%;
+        }
+        .quiz-section .text-column {
+            flex: 2;
+            max-width: 40%;
+            padding-right: 20px; /* 添加右边距防止溢出 */
+            box-sizing: border-box; /* 确保padding包含在宽度内 */
+        }
+        .quiz-section h2 {
+            font-size: 2.0em; /* 增大字体大小 */
+            margin-bottom: 10px;
+            font-family: 'Times New Roman', Times, serif; /* 设置字体为 Times New Roman */
+        }
+        .quiz-section p {
+            font-size: 1em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .quiz-section video {
+            border-radius: 8px; /* 设置视频的圆角为8px */
+            width: 100%; /* 视频宽度占满整个左边栏 */
+            height: auto; /* 视频高度自动调整 */
+        }
+        .tabs {
+        display: flex;
+        border-bottom: 2px solid #ddd;
+        padding: 0;
+        margin-top: 10px;
+        }
+        .tab-button {
+            flex: 1;
+            padding: 8px 10px;
+            text-align: center;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            transition: color 0.3s;
+            font-size: 0.9em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            color: #555;
+            position: relative;
+        }
+        .tab-button i {
+            font-size: 1.2em;
+        }
+        .tab-button.active {
+            color: #FFA500;
+        }
+        .tab-button.active::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background-color: #FFA500;
+        }
+        /* 居中问题和选项 */
+        .quiz-question p {
+            font-family: 'Times New Roman', Times, serif; /* 修改字体为 Times New Roman */
+            font-size: 20px; /* 加大字体 */
+            font-weight: bold; /* 加粗 */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* 修改quiz选项布局 */
+        .quiz-options {
+            list-style-type: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 两列 */
+            grid-template-rows: auto auto; /* 两行 */
+            gap: 15px; /* 选项间距 */
+            max-width: 100%; /* 确保不超出容器 */
+            margin: 0 auto; /* 居中 */
+            width: 90%; /* 稍微减少宽度防止溢出 */
+        }
+
+        .quiz-options li {
+            margin: 0; /* 移除原有外边距 */
+            display: flex;
+            justify-content: center; /* 居中选项 */
+        }
+
+        .quiz-options button {
+            display: flex;
+            align-items: center;
+            width: 100%; /* 填满网格单元格 */
+            padding: 15px;
+            background-color: rgba(245, 245, 220, 0.8); /* 透明度80%的米色 */
+            border: none; /* 移除边框 */
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 20px;
+            text-align: left;
+            justify-content: flex-start; /* 文字左对齐 */
+            height: 100%; /* 统一高度 */
+            box-sizing: border-box;
+            transition: background-color 0.3s;
+        }
+
+        .quiz-options button:hover {
+            background-color: rgba(245, 245, 220, 1); /* 悬停时完全不透明 */
+        }
+        
+        /* 选项字母标签样式 */
+        .option-label {
+            font-weight: bold;
+            color: #333;
+            margin-right: 10px;
+            width: auto; /* 自适应宽度 */
+            white-space: nowrap; /* 防止换行 */
+        }
+
+        /* 调整反馈信息位置 */
+        .quiz-feedback {
+            grid-column: span 2; /* 反馈信息跨两列 */
+            margin-top: 20px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+        
+        /* 新增样式规则，针对 route 和 direction 问题 */
+        .quiz-feedback.hide-groundtruth span:nth-child(2) {
+            display: none;
+        }
+
+        /* 背景色和字体统一 */
+        .tabs-section {
+            background-color: #ffffff; /* 设置与页面其他部分一致的背景色 */
+            padding: 40px 0;
+        }
+
+        .tabs-section .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .tabs-section h2{
+            font-size: 2.0em;
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        .tabs-section p{
+            font-size: 1.5em;
+            color: #333;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        /* Task Definition Tabs */
+        .task-tabs {
+            display: flex;
+            border-bottom: 2px solid #ddd;
+            margin-top: 10px;
+        }
+        .task-tab-button {
+            flex: 1;
+            padding: 12px 20px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #555;
+            border: none;
+            background: none;
+        }
+        .task-tab-button.active {
+            color: #FFA500;
+            border-bottom: 4px solid #FFA500;
+        }
+        .task-tab-content {
+            display: block;
+            padding: 20px;
+        }
+        .task-tab-content.active {
+            display: block;
+        }
+
+        /* More Examples Section Styles */
+        .more-examples-section {
+            background-color: #ffffff; /* 确保背景为白色 */
+            padding: 40px 0;
+        }
+
+        .image-slider {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: visible;
+            height: 1000px;
+        }
+
+        /* 修改slides-container样式 */
+        .slides-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: visible; /* 确保容器允许内容溢出 */
+        }
+
+        /* 修改slide样式 */
+        .slide {
+            position: absolute;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            top: 0;
+            left: 0;
+            z-index: 1; /* 设置基础z-index */
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 2; /* 活动幻灯片稍高 */
+        }
+
+        /* 修改图片悬停效果 */
+        .full-width-image {
+            width: 100%;
+            max-width: 100%;
+            border-radius: 8px;
+            transition: transform 0.3s ease-in-out;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform-origin: center center; /* 确保从中心放大 */
+            position: relative; /* 添加相对定位 */
+        }
+
+        .full-width-image:hover {
+            transform: scale(1.1);
+            z-index: 20; /* 设置足够高的z-index确保在最前 */
+            position: relative; /* 确保z-index生效 */
+        }
+
+        .slider-controls {
+            position: absolute;
+            bottom: -85px; 
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            z-index: 5;
+            margin-top: 30px; /* 额外增加上边距 */
+        }
+
+        .prev-button, .next-button {
+            background-color: #333333;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            cursor: pointer;
+            font-size: 1.2em;
+            border-radius: 30px;
+            transition: background-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 120px;
+        }
+
+        .prev-button:hover, .next-button:hover {
+            background-color: #555555;
+        }
+
+        .prev-button i, .next-button i {
+            margin: 0 8px;
+        }
+
+
+        /* 新增图片放大样式 */
+        .image-container img {
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.2);
+        }
+
+        /* Analysis Section Styles - Revised for Consistency */
+        .analysis-section {
+            background-color: #ffffff;
+            padding: 40px 0;
+            margin: 0; /* Ensure no extra margin */
+        }
+        
+        .analysis-section .container {
+            max-width: 1200px; /* Standard container width */
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* --- Start Revised Rules --- */
+        
+        /* Title styling (ensure it matches other sections) */
+        .analysis-section h2 {
+            font-size: 2.0em;
+            margin-bottom: 20px; /* Matches Abstract/Conclusion h2 */
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        
+        /* Sub-heading styling (h3) */
+        .analysis-section h3 {
+            font-size: 1.8em;
+            color: #333;
+            font-family: 'Times New Roman', Times, serif;
+            text-align: left; /* Align text left within the block */
+            /* --- Width and Centering --- */
+            max-width: 800px; /* Crucial: Matches p width */
+            margin: 30px auto 15px auto; /* Top margin, Auto L/R for centering, Bottom margin */
+        }
+        
+        /* Paragraph styling (p) - Make identical to Abstract/Conclusion */
+        .analysis-section p {
+            font-size: 1.5em;
+            color: #333;
+            font-family: 'Times New Roman', Times, serif;
+            text-align: justify; /* Justify text within the block */
+            /* --- Width and Centering --- */
+            max-width: 800px; /* Crucial: Consistent width */
+            margin: 0 auto 20px auto; /* No Top, Auto L/R for centering, Bottom margin */
+        }
+        
+        /* Ensure the introductory paragraph also follows this */
+        .analysis-section > .container > p:first-of-type {
+            /* This might need adjustment if it looks odd, but generally should follow the rule above */
+             margin-bottom: 30px; /* Add more space before the image */
+        }
+        
+        
+        /* Image container styling */
+        .analysis-section .image-container {
+            text-align: center;
+            margin-top: 20px; /* Adjust as needed */
+            margin-bottom: 40px; /* Space below image */
+        }
+        
+        /* Image styling */
+        .analysis-section .full-width-image {
+            width: 100%;
+            /* --- Width Control for Image --- */
+            max-width: 800px; /* Make image width consistent with text block */
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            display: inline-block; /* For centering via text-align */
+        }
+        
+        /* Remove bottom margin from the very last paragraph in the section */
+        .analysis-section > .container > p:last-of-type {
+            margin-bottom: 0;
+        }
+        
+        /* --- End Revised Rules --- */
+    </style>
+</head>
+<body>
+    <section class="robot">
+        <div class="container">
+          <h1 class="title">
+            <span class="highlight">STI-Bench</span> : Are MLLMs Ready for <br> Precise Spatial-Temporal World Understanding?
+          </h1>
+          <p class="publication-authors">
+            <span class="author-name">Yun Li</span><sup>1,2</sup>, 
+            <span class="author-name">Yiming Zhang</span><sup>1,3</sup>, 
+            <span class="author-name">Tao Lin</span><sup>1</sup>, 
+            <span class="author-name">XiangRui Liu</span><sup>1,4</sup>, 
+            <span class="author-name">Wenxiao Cai</span><sup>5</sup>, 
+            <span class="author-name">Zheng Liu</span><sup>4</sup>, 
+            <span class="author-name">Bo Zhao</span><sup>1</sup><br>
+            <span class="author-affiliation"><sup>1</sup>School of AI, Shanghai Jiao Tong University;</span> 
+            <span class="author-affiliation"><sup>2</sup>China University of Geosciences;</span> 
+            <span class="author-affiliation"><sup>3</sup>Nanyang Technological University;</span> 
+            <span class="author-affiliation"><sup>4</sup>BAAI;</span> 
+            <span class="author-affiliation"><sup>5</sup>Stanford University;</span>
+          </p>
+        </div>
+            <div class="publication-links">
+                <span class="link-block">
+                    <a href="https://arxiv.org/abs/2503.23765" target="_blank">
+                        <span class="icon"><i class="ai ai-arxiv"></i></span> arXiv
+                    </a>
+                </span>
+                <span class="link-block">
+                    <a href="assets/2503.23765v1.pdf" target="_blank">
+                        <span class="icon"><i class="fas fa-file-pdf"></i></span> PDF
+                    </a>
+                </span>
+                <span class="link-block">
+                    <a href="https://huggingface.co/datasets/MIRA-SJTU/STI-Bench" target="_blank">
+                        <span class="icon"><i class="fas fa-database"></i></span> Dataset
+                    </a>
+                </span>
+                <span class="link-block">
+                <a href="https://github.com/MIRA-SJTU/STI-Bench" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                        <i class="fab fa-github"></i>
+                    </span>
+                    <span>Code</span>
+                  </a>
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Logo Section -->
+    <section class="logo-section">
+        <div class="container">
+            <div class="image-container">
+                <img src="assets/images/cover.jpg"  alt="Cover" class="full-width-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Abstract Section -->
+    <section class="abstract-section">
+        <div class="container">
+            <h2>Abstract</h2>
+            <p>
+                TThe use of Multimodal Large Language Models (MLLMs) as an end-to-end solution for Embodied AI and Autonomous Driving has become a prevailing trend. While MLLMs have been extensively studied for visual semantic understanding tasks, their ability to perform precise and quantitative spatial-temporal understanding in real-world applications remains largely unexamined, leading to uncertain prospects. To evaluate models' Spatial-Temporal Intelligence, we introduce STI-Bench, a benchmark designed to evaluate MLLMs' spatial-temporal understanding through challenging tasks such as estimating and predicting the appearance, pose, displacement, and motion of objects. Our benchmark encompasses a wide range of robot and vehicle operations across desktop, indoor, and outdoor scenarios. 
+                The extensive experiments reveals that the state-of-the-art MLLMs still struggle in real-world spatial-temporal understanding, especially in tasks requiring precise distance estimation and motion analysis. 
+            </p>
+        </div>
+    </section>
+
+    <section class="demo-video-section">
+        <div class="container">
+            <h2>Demo Videos</h2>
+            <!-- 第一行视频 -->
+            <div class="video-container" style="justify-content: space-between;">
+                <video controls autoplay muted loop style>
+                    <source src="assets/videos/00001.mp4" type="video/mp4">
+                </video>
+                <video controls autoplay muted loop style>
+                    <source src="assets/videos/00010.mp4" type="video/mp4">
+                </video>
+                <video controls autoplay muted loop style>
+                    <source src="assets/videos/00020.mp4" type="video/mp4">
+                </video>
+            </div>
+            <!-- 第二行视频 -->
+            <div class="video-container" style="justify-content: space-between;">
+                <video controls autoplay muted loop style>
+                    <source src="assets/videos/1020365635352417945_7625_000_7645_000_camera_1.mp4" type="video/mp4">
+                </video>
+                <video controls autoplay muted loop style>
+                    <source src="assets/videos/1024360143612057520_3580_000_3600_000_camera_1.mp4" type="video/mp4">
+                </video>
+                <video controls autoplay muted loop style>
+                    <source src="assets/videos/10247954040621004675_2180_000_2200_000_camera_1.mp4" type="video/mp4">
+                </video>
+            </div>
+            <!-- 第三行视频 -->
+            <div class="video-container" style="justify-content: space-between;">
+                <video controls autoplay muted loop style>
+                    <source src="assets/videos/scene0001_00.mp4" type="video/mp4">
+                </video>
+                <video controls autoplay muted loop style>
+                    <source src="assets/videos/scene0010_00.mp4" type="video/mp4">
+                </video>
+                <video controls autoplay muted loop style>
+                    <source src="assets/videos/scene0020_00.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabs Section -->
+    <section class="tabs-section">
+        <div class="container">
+            <h2>Tasks Definition</h2>
+            <p>We have divided the questions into Static Understanding and Dynamic Understanding, and further give definitions to 8 different tasks.</p>
+            <div class="task-tabs">
+                <button class="task-tab-button active" onclick="openTaskTab(event, 'Static')">Static Understanding</button>
+                <button class="task-tab-button" onclick="openTaskTab(event, 'Dynamic')">Dynamic Understanding</button>
+            </div>
+
+            <div id="Static" class="task-tab-content">
+                <p><strong>Dimensional Measurement.</strong> Concerns estimates of an object's geometric size, such as length, width, and height, as well as the distance between objects or between the camera and an object.<br>
+                    <strong>Example:</strong> <em>“What is the height of this box?” or “How close is the camera to the table?”</em>
+                </p>
+                <p><strong>Spatial Relation.</strong> Focuses on identifying spatial relationships among objects or between the camera and an object, including front and back, left and right, up and below.<br>
+                    <strong>Example:</strong> <em>“Is the chair on the left or right side of the table?” or “What is the position of the red bag relative to the fur sofa?”</em>
+                </p>
+                <p><strong>3D Video Grounding.</strong> Given a semantic description such as “the red backpack on the brown sofa,” the goal is to retrieve the object's 3D bounding box in the camera coordinate system at a specific point in the video.<br>
+                    <strong>Example:</strong> <em>“Locate the 3D bounding box of the red suitcase near the bed.”</em>
+                </p>
+            </div>
+
+            <div id="Dynamic" class="task-tab-content" style="display: none;">
+                <p><strong>Displacement and Path Length.</strong> Focuses on how far an object or the camera travels between two given time points.<br>
+                    <strong>Example:</strong> <em>“How far has the car traveled from 1s to 18s?”</em>
+                </p>
+                <p><strong>Speed and Acceleration.</strong> Investigates motion parameters by integrating spatial displacement with time intervals.<br>
+                    <strong>Example:</strong> <em>“What is the average speed of the camera?” or “How quickly is the ball accelerating?”</em>
+                </p>
+                <p><strong>Ego-Centric Orientation.</strong> Examines how the camera’s azimuth orientation, parallel to the ground plane, changes over the duration of the video.<br>
+                    <strong>Example:</strong> <em>“How many degrees does the camera’s horizontal orientation shift from the start of the video to its end?”</em>
+                </p>
+                <p><strong>Trajectory Description.</strong> Describes or infers the camera’s or an object’s motion path throughout the entire video, potentially involving multiple segments of travel and turns.<br>
+                    <strong>Example:</strong> <em>“Summarize the camera trajectory, including distances moved and turns made.”</em>
+                </p>
+                <p><strong>Pose Estimation.</strong> Given the camera’s initial 3D pose, including position and orientation, estimates its pose at a specified point in the video using only the observed RGB data.<br>
+                    <strong>Example:</strong> <em>“Given the initial pose of the camera, what is the camera’s pose at the requested time?”</em>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section class="comparison-section">
+        <div class="container">
+            <h2>Comparison</h2>
+            <div class="image-container">
+                <img src="assets/images/comparison.jpg" alt="Comparison" class="full-width-image">
+            </div>
+            <p>
+                <strong>Comparison of STI-Bench with existing benchmarks.</strong> 
+                <strong>Data</strong> represents the source of our QA data, where <strong>V</strong> stands for Video and <strong>I</strong> stands for Image. 
+                <strong>Env.</strong> indicates the environment in which the data is generated, where <strong>S</strong> represents Simulation and <strong>R</strong> represents Real. 
+                The two columns under <strong>View</strong> indicate whether the dataset includes Ego-centric and Allocentric perspectives. 
+                The two columns under <strong>Evaluation</strong> specify whether the ground truth is presented in numerical or textual form. 
+                The four columns under <strong>Spatial-Temporal</strong> indicate whether the benchmark evaluates spatial distance, direction (with angular precision), velocity, or a precise and comprehensive trajectory description.
+            </p>
+        </div>
+    </section>
+
+    <!-- Pipeline Section -->
+    <section class="pipeline-section">
+        <div class="container">
+            <h2>Pipeline</h2>
+            <div class="image-container">
+                <img src="assets/images/pipeline.jpg" alt="Pipeline" class="full-width-image">
+            </div>
+            <p><strong>I. Data Collection</strong> Collected data from Desktop, Indoor, and Outdoor scenarios using Omni6DPose for 6D object pose estimation, ScanNet for indoor 3D scene reconstruction, and Waymo for autonomous driving. These datasets provide frame-by-frame camera parameters and point clouds.</p>
+            <p><strong>II. Automatic QA Pair Generation</strong> Generated QA pairs with MLLMs using detailed object descriptions and computed ground-truth information for each task. This process produced a diverse set of questions and challenging answer options.</p>
+            <p><strong>III. Human Quality Control</strong> Conducted human quality control to filter and refine QA pairs, addressing issues like inaccurate descriptions and insufficient video information. This ensured high-quality questions and shuffled answer options for robust evaluation.</p>
+            <p><strong>IV. Fine-Grained Adjustment</strong> Adjusted QA pairs with scaling factors to match the precision needs of different scenarios, from millimeters for desktop settings to meters for outdoor environments. This fine-grained adjustment helps train and evaluate MLLMs effectively.</p>
+        </div>
+    </section>
+
+    <section class="results-section">
+        <div class="container">
+            <h2>Results</h2>
+            <div style="display: flex; gap: 20px;">
+                <div style="flex: 1; display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <img src="assets/images/results.jpg" alt="Results" class="full-width-image">
+                    </div>
+                    <div>
+                        <p><strong>Main Results.</strong> The experimental results in indoor, outdoor, and desktop environments consistently demonstrate that MLLMs exhibit significant limitations in Dimensional Measurement and displacement & estimation tasks. Across all evaluated scenarios, these models achieve substantially lower performance compared to other spatial reasoning tasks, such as pose estimation, directional reasoning, and 3D video grounding. In particular, performance is uniformly low among all models tested, indicating a generalized deficiency in accurately perceiving and estimating distances and displacements, rather than shortcomings of specific model architectures.</p>
+                    </div>
+                </div>
+                <div style="flex: 1;">
+                    <img src="assets/images/radar.jpg" alt="Radar" class="full-width-image">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 如果有更多的结果测出来，那么文字放最底下 -->
+    <!-- <section class="results-section">
+        <div class="container">
+            <h2>Results</h2>
+            <div class="image-container" style="display: flex; justify-content: space-between; gap: 20px;">
+                <div style="flex: 1;">
+                    <img src="assets/images/results.png" alt="Results" class="full-width-image">
+                </div>
+                <div style="flex: 1;">
+                    <img src="assets/images/radar.jpg" alt="Radar" class="full-width-image">
+                </div>
+            </div>
+            <p><strong>Main Results.</strong> The experimental results in indoor, outdoor, and desktop environments consistently demonstrate that MLLMs exhibit significant limitations in Dimensional Measurement and displacement & estimation tasks. Across all evaluated scenarios, these models achieve substantially lower performance compared to other spatial reasoning tasks, such as pose estimation, directional reasoning, and 3D video grounding. In particular, performance is uniformly low among all models tested, indicating a generalized deficiency in accurately perceiving and estimating distances and displacements, rather than shortcomings of specific model architectures. </p>
+        </div>
+    </section> -->
+
+    <!-- Analysis Section -->
+    <section class="analysis-section">
+        <div class="container">
+            <h2>Analysis</h2>
+            <p>
+                By leveraging the model’s reasoning process and uniformly sampling approximately 200 error records across each task type and scenario, we categorize its errors into three representative patterns, which reflects three core limitations of MLLMs.
+            </p>
+            <div class="image-container">
+                <img src="assets/images/error_pie.jpg" alt="Error Analysis Pie Chart" class="full-width-image">
+            </div>
+
+            <h3>1. Inaccurate Spatial Quantification</h3>
+            <p>
+                Models struggle with accurately estimating spatial properties from visual inputs, including object dimensions, distances, and 3D positions. These issues stem from a lack of clear visual references and the inherent challenge of inferring 3D information from 2D images, affecting all tasks requiring precise spatial measurements.
+            </p>
+
+            <h3>2. Flawed Temporal Dynamics Understanding</h3>
+            <p>
+                Models perform poorly in understanding information that changes over time, struggling to accurately calculate and describe motion characteristics like displacement, speed, and trajectories. They particularly struggle with distinguishing object motion from camera motion, issues stemming from challenges in cross-frame integration and lack of physical models.
+            </p>
+
+            <h3>3. Weak Cross-Modal Integration</h3>
+            <p>
+                Models fail to effectively connect textual instructions with visual content or integrate non-visual data with visual information. This leads to misinterpretation of temporal constraints, improper use of initial conditions, and incorrect associations between structured data and visual elements, affecting all tasks relying on multimodal information.
+            </p>
+        </div>
+    </section>
+    
+    <section class="quiz-section">
+        <div class="container">
+            <h2 class="quiz-section-title">QUIZ</h2>
+            <div class="quiz-content" style="display: flex; gap: 20px;">
+                <div class="video-column" style="flex: 3;">
+                    <video id="quiz-video" controls autoplay muted loop style="width: 100%; border-radius: 8px;">
+                        <source src="assets/videos/17136314889476348164_979_560_999_560_camera_2.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div class="text-column" style="flex: 2;">
+                    <div class="tabs">
+                        <button class="tab-button active" onclick="showTab(0)"><i class="fa-solid fa-route"></i> Displacement & Path Length</button>
+                        <button class="tab-button" onclick="showTab(1)"><i class="fas fa-rocket"></i> Speed & Acceleration  </button>
+                        <button class="tab-button" onclick="showTab(2)"><i class="fas fa-ruler"></i> Dimensional Measurement </button>
+                    </div>
+                    <div class="tab-content" id="tab-content">
+                        <div class="quiz-question">
+                            <p>What is the velocity of the object?</p>
+                            <ul class="quiz-options">
+                                <li><button onclick="checkAnswer(0, 0)">10 m/s</button></li>
+                                <li><button onclick="checkAnswer(0, 1)">20 m/s</button></li>
+                                <li><button onclick="checkAnswer(0, 2)">30 m/s</button></li>
+                                <li><button onclick="checkAnswer(0, 3)">40 m/s</button></li>
+                            </ul>
+                            <p id="quiz-feedback-0" class="quiz-feedback"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="more-examples-section">
+        <div class="container">
+            <h2>More Examples</h2>
+            <div class="image-slider">
+                <div class="slides-container">
+                    <div class="slide active" id="slide-0">
+                        <img src="assets/images/outdoor_example.jpg" alt="Example 1" class="full-width-image">
+                    </div>
+                    <div class="slide" id="slide-1">
+                        <img src="assets/images/indoor_example.jpg" alt="Example 2" class="full-width-image">
+                    </div>
+                    <div class="slide" id="slide-2">
+                        <img src="assets/images/desktop_example.jpg" alt="Example 3" class="full-width-image">
+                    </div>
+                </div>
+                <div class="slider-controls">
+                    <button class="prev-button" onclick="prevSlide()">
+                        <i class="fas fa-chevron-left"></i> Prev
+                    </button>
+                    <button class="next-button" onclick="nextSlide()">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        // 初始化显示第一张
+        slides[0].classList.add('active');
+        slides[0].style.opacity = 1;
+
+        function showSlide(index) {
+            // 先重置所有幻灯片状态
+            slides.forEach(slide => {
+                slide.style.zIndex = 1;
+                slide.classList.remove('active');
+                slide.style.opacity = 0;
+            });
+            
+            // 设置新活动幻灯片
+            slides[index].classList.add('active');
+            slides[index].style.zIndex = 2;
+            setTimeout(() => {
+                slides[index].style.opacity = 1;
+            }, 50);
+            
+            currentSlide = index;
+        }
+
+        function nextSlide() {
+            let nextSlide = (currentSlide + 1) % totalSlides;
+            showSlide(nextSlide);
+        }
+
+        function prevSlide() {
+            let prevSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(prevSlide);
+        }
+
+        // 自动切换
+        let autoSlideInterval;
+        function startAutoSlide() {
+            autoSlideInterval = setInterval(nextSlide, 3000);
+        }
+
+        function stopAutoSlide() {
+            clearInterval(autoSlideInterval);
+        }
+
+        // 初始化
+        startAutoSlide();
+
+        // 鼠标悬停控制
+        const slider = document.querySelector('.image-slider');
+        slider.addEventListener('mouseover', stopAutoSlide);
+        slider.addEventListener('mouseout', startAutoSlide);
+    </script>
+
+    <section class="conclusion-section">
+        <div class="container">
+            <h2>Conclusion</h2>
+            <p>
+                We introduced STI-Bench, a comprehensive benchmark to assess MLLMs’ spatial-temporal understanding through over 300 real-world videos and 2,000 QA pairs of robot desktop, indoor, and outdoor scenarios, which reveals significant limitations in current MLLMs' spatial-temporal understanding capabilities, with even the top-performing models achieving no more than 50% accuracy. Models particularly struggle with precise quantitative tasks like dimensional measurement. Our analysis identifies three key weaknesses: inaccurate spatial quantification, flawed temporal dynamics understanding, and weak cross-modal integration. These findings emphasize the substantial gap between current capabilities and the reliability needed for embodied AI and autonomous driving applications. STI-Bench provides a valuable framework for evaluating and improving MLLMs' ability to understand the physical world—essential for developing the next generation of embodied intelligent systems.            </p>
+        </div>
+    </section>
+
+    <script>
+        function openTaskTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("task-tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("task-tab-button");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+    </script>
+
+  <script>
+    // 定义问题和答案
+    // 更新问题和答案数组，移除第四个问题
+    const questions = [
+        {
+            question: "From 3.0s to 4.5s, what is the most appropriate length of a silver sedan with tinted windows?",
+            options: ["3.90m","4.30m","5.00m","3.70m"],
+            correctAnswer: 1,
+            GroundTruth: "The GroundTruth is 4.34m."
+        },
+        {
+            question: "From 4.1s to 12.5s, what is the most appropriate average speed of the dark SUV partially behind the garage?",
+            options: ["0.0m/s","0.5m/s","1.0m/s","2.0m/s"],
+            correctAnswer: 0,
+            GroundTruth: "The GroundTruth is 0.0m/s."
+        },
+        {
+            question: "What is the distance between the camera and the beige minivan with roof rack at t=14.9s?",
+            options: ["24.0m","28.0m","25.0m","26.0m"],
+            correctAnswer: 3,
+            GroundTruth: "The correct answer is 26.06m.",
+        }
+    ];
+
+    // 更新时间点数组，现在只有3个时间点
+    const t1 = 3;
+    const t2 = 4;
+    const t3 = 14;
+
+    // 显示 Tab 内容
+    function showTab(index) {
+        const question = questions[index];
+        const optionsHTML = question.options.map((option, i) => `
+            <li>
+                <button onclick="checkAnswer(${index}, ${i})">
+                    <span class="option-label">${String.fromCharCode(65 + i)}</span>
+                    <span class="option-text">${option}</span>
+                </button>
+            </li>
+        `).join("");
+
+        document.getElementById("tab-content").innerHTML = `
+            <div class="quiz-question">
+                <p>${question.question}</p>
+                <ul class="quiz-options">${optionsHTML}</ul>
+                <p id="quiz-feedback-${index}" class="quiz-feedback"></p>
+            </div>
+        `;
+
+        // 更新 Tab 按钮的激活状态
+        document.querySelectorAll(".tab-button").forEach((btn, i) => {
+            btn.classList.toggle("active", i === index);
+        });
+    }
+
+    // 检查答案
+    function checkAnswer(questionIndex, selectedIndex) {
+        const question = questions[questionIndex];
+        const feedbackElement = document.getElementById(`quiz-feedback-${questionIndex}`);
+
+        let feedbackContent = "";
+        if (selectedIndex === question.correctAnswer) {
+            feedbackContent = "<span style='color: green;'> Correct! 🎉</span>";
+            // 如果是 route 或 direction 的问题，隐藏 GroundTruth
+            if (question.isRouteOrDirection) {
+                feedbackElement.classList.add("hide-groundtruth");
+            } else {
+                feedbackElement.classList.remove("hide-groundtruth");
+                feedbackContent += `<br><span>${question.GroundTruth}</span>`;
+            }
+        } else {
+            feedbackElement.classList.remove("hide-groundtruth");
+            feedbackContent = `
+                <span style='color: red;'> Incorrect!</span><br>
+                <span>${question.GroundTruth}</span>
+            `;
+        }
+
+        feedbackElement.innerHTML = feedbackContent;
+    }
+
+
+    // 获取视频元素
+    const video = document.getElementById("quiz-video");
+
+    // 获取所有 Tab 按钮
+    const tabButtons = document.querySelectorAll(".tab-button");
+
+    // 为每个 Tab 按钮添加点击事件监听器
+    tabButtons.forEach((button, index) => {
+        button.addEventListener("click", () => {
+            switch (index) {
+                case 0:
+                    video.currentTime = t1;
+                    break;
+                case 1:
+                    video.currentTime = t2;
+                    break;
+                case 2:
+                    video.currentTime = t3;
+                    break;
+            }
+            showTab(index);
+        });
+    });
+
+    // 初始化显示第一个 Tab 的内容
+    showTab(0);
+</script>
+  
+</body>
+</html>
